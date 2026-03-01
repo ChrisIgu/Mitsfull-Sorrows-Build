@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="options.png" width="2343" height="2178">
+	<SubTexture name="idle0000" x="1" y="1881" width="882" height="144" frameX="-4" frameY="-1" frameWidth="888" frameHeight="148"/>
+	<SubTexture name="encima0000" x="902" y="1816" width="882" height="145" frameX="-4" frameY="-0" frameWidth="888" frameHeight="147"/>
+	<SubTexture name="selected0000" x="1" y="1728" width="898" height="150" frameX="-268" frameY="-92" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0001" x="931" y="1621" width="898" height="192" frameX="-268" frameY="-72" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0002" x="1" y="2028" width="879" height="149" frameX="-278" frameY="-93" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0003" x="975" y="1412" width="905" height="206" frameX="-269" frameY="-65" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0004" x="1" y="1525" width="927" height="200" frameX="-258" frameY="-68" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0005" x="1121" y="1215" width="949" height="194" frameX="-246" frameY="-71" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0006" x="1" y="1334" width="971" height="188" frameX="-236" frameY="-74" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0007" x="1179" y="741" width="992" height="181" frameX="-225" frameY="-77" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0008" x="1142" y="1037" width="1014" height="175" frameX="-214" frameY="-80" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0009" x="1214" y="478" width="1033" height="168" frameX="-204" frameY="-84" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0010" x="1228" y="313" width="1055" height="162" frameX="-193" frameY="-87" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0011" x="1240" y="154" width="1078" height="156" frameX="-182" frameY="-90" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0012" x="1245" y="1" width="1097" height="150" frameX="-172" frameY="-93" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0013" x="1" y="1185" width="1117" height="146" frameX="-162" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0014" x="1" y="1037" width="1138" height="145" frameX="-152" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0015" x="1" y="889" width="1155" height="145" frameX="-143" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0016" x="1" y="741" width="1175" height="145" frameX="-133" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0017" x="1" y="593" width="1193" height="145" frameX="-124" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0018" x="1" y="445" width="1210" height="145" frameX="-115" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0019" x="1" y="297" width="1224" height="145" frameX="-108" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0020" x="1" y="149" width="1236" height="145" frameX="-102" frameY="-94" frameWidth="1449" frameHeight="341"/>
+	<SubTexture name="selected0021" x="1" y="1" width="1241" height="145" frameX="-99" frameY="-94" frameWidth="1449" frameHeight="341"/>
+</TextureAtlas>

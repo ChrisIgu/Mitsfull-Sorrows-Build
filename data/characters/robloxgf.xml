@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-character>
+<character flipX="true" icon="robloxgf">
+	<anim name="idle" anim="Idle"/>
+	<anim name="singRIGHT" anim="Left" x="-4" y="5"/>
+	<anim name="singLEFT" anim="Right" x="17" y="-2"/>
+	<anim name="singDOWN" anim="Down" x="-1" y="-3"/>
+	<anim name="singUP" anim="Up" x="-3" y="13"/>
+</character>
