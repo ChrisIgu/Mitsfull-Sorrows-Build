@@ -1,5 +1,7 @@
 import funkin.menus.credits.CreditsMain;
 import funkin.options.OptionsMenu;
+import funkin.menus.ModSwitchMenu;
+import funkin.editors.EditorPicker;
 
 var opcionestxt:Array<String> = ['main', 'freeplay', 'credits', 'options'];
 var opcionesSprite:Array<FlxSprite> = [];
@@ -55,7 +57,7 @@ function create(){
 	}
 }
 
-var seleccionado:Bool = false; // Nueva variable al inicio
+var seleccionado:Bool = false;
 var val:Int = 0;
 function update(){
     if (FlxG.keys.justPressed.THREE) FlxG.resetState();
@@ -68,7 +70,7 @@ function update(){
 
     for(i in 0...opcionestxt.length){
         if(i == curSelected && controls.ACCEPT){
-            seleccionado = true; // Bloqueamos el menu
+            seleccionado = true;
             opcionesSprite[i].animation.play('selected');
             opcionesSprite[i].setPosition(opcionesSprite[i].x - 98, opcionesSprite[i].y - 33);
 
@@ -93,6 +95,9 @@ function update(){
 			rendersSprite[i].alpha = 0;	
 			}
 	}
+
+	if (controls.SWITCHMOD) openSubState(new ModSwitchMenu());
+	if (controls.DEV_ACCESS) openSubState(new EditorPicker());
 }
 
 function confirmSelected(selection:Int){

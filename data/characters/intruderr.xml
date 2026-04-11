@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-character>
+<character icon="intruder" color="#1A1A1A">
+	<anim name="idle" anim="exportar/Idle"/>
+	<anim name="singDOWN" anim="exportar/Down" x="23" y="-204"/>
+	<anim name="singRIGHT" anim="exportar/Right" x="-12"/>
+	<anim name="singLEFT" anim="exportar/Left" x="259" y="-1"/>
+	<anim name="singUP" anim="exportar/Up" x="186" y="122"/>
+</character>

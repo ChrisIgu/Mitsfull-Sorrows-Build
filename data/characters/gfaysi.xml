@@ -1,0 +1,21 @@
+<!DOCTYPE codename-engine-character>
+<character flipX="true" camx="2" camy="2">
+	<anim name="idle" anim="Idle" x="-255" y="15"/>
+	<anim name="idle-alt" anim="Idalt" x="-254" y="14"/>
+	<anim name="singDOWN" anim="Down" x="-256" y="14"/>
+	<anim name="singDOWN-alt" anim="Dw-alt" x="-252" y="12"/>
+	<anim name="singDOWNmiss" anim="Dwmiss" x="-258" y="12"/>
+	<anim name="singDOWNmiss-alt" anim="Dmiss-alt" x="-256" y="10"/>
+	<anim name="singRIGHT" anim="Rightt" x="-254" y="12"/>
+	<anim name="singRIGHT-alt" anim="Ri-alt" x="-254" y="12"/>
+	<anim name="singRIGHTmiss" anim="Rimiss" x="-254" y="12"/>
+	<anim name="singRIGHTmiss-alt" anim="Rmiss-alt" x="-260" y="16"/>
+	<anim name="singLEFT" anim="Left" x="-252" y="14"/>
+	<anim name="singLEFT-alt" anim="Le-alt" x="-254" y="12"/>
+	<anim name="singLEFTmiss" anim="Lemiss" x="-256" y="12"/>
+	<anim name="singLEFTmiss-alt" anim="Lmiss-alt" x="-260" y="10"/>
+	<anim name="singUP" anim="Up" x="-131" y="-299"/>
+	<anim name="singUP-alt" anim="p-alt" x="-133" y="-297"/>
+	<anim name="singUPmiss" anim="pmiss" x="-132" y="-302"/>
+	<anim name="singUPmiss-alt" anim="umiss-alt" x="-128" y="-299"/>
+</character>
