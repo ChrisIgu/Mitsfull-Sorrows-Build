@@ -2,6 +2,7 @@
 <character flipX="true" camx="2" camy="2">
 	<anim name="idle" anim="Idle" x="-255" y="15"/>
 	<anim name="idle-alt" anim="Idalt" x="-254" y="14"/>
+	<anim name="sustico" anim="scared" x="-254" y="14"/>
 	<anim name="singDOWN" anim="Down" x="-256" y="14"/>
 	<anim name="singDOWN-alt" anim="Dw-alt" x="-252" y="12"/>
 	<anim name="singDOWNmiss" anim="Dwmiss" x="-258" y="12"/>
