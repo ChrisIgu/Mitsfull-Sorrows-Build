@@ -1,6 +1,13 @@
+import flixel.math.FlxBasePoint;
+
+var movement = new FlxBasePoint();
 var movecam:Bool = false;
 var totalTime:Float = 0;
-var phase:Int = -1;
+var phase:Float = -1;
+var notepositiony:Float;
+var notepositionplayerx:Array<Float> = [];
+var notepositioncpux:Array<Float> = [];
+var reset:Bool = false;
 
 var saturation = new FunkinShader('
     #pragma header
@@ -74,41 +81,67 @@ void mainImage()
 }
 ');
 
-function postCreate(){
-    camGame.addShader(saturation);
-    FlxG.cameras.remove(camHUD, false);
+var blangro = new FunkinShader('
+#pragma header
 
+uniform float grayAmount; // 0.0 = color normal, 1.0 = blanco y negro
+
+void main() {
+    vec4 color = flixel_texture2D(bitmap, openfl_TextureCoordv);
+    
+    float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+    
+    vec3 finalColor = mix(color.rgb, vec3(gray), grayAmount);
+    
+    gl_FragColor = vec4(finalColor, color.a);
+}
+');
+
+function postCreate(){
     FlxG.cameras.add(huddelamierdaaaa = new HudCamera(0, 0, 1280, 770, 1), false).bgColor = 0;
     huddelamierdaaaa.zoom = 0.9;
     huddelamierdaaaa.downscroll = Options.downscroll;
 
-    FlxG.cameras.add(camHUD, false);
-
     comboGroup.setPosition(comboGroup.x + 900, comboGroup.y + 200);
+
+    camGame.addShader(saturation);
+    camGame.addShader(blangro);
+    huddelamierdaaaa.addShader(blangro);
+
+    blangro.grayAmount = 0;
 
     saturation. AAA = 0.20; //contraste de los sprites
     saturation. BBB = 0.25; //iluminacion de los sprites
     saturation.brightness = 0;
     saturation.saturation = 0;
 
-    for(strum in [player, cpu]){
+    for(strum in [cpu, player]){
         for (i in 0...4) {
             strum.members[i].camera = huddelamierdaaaa;
             (strum == player) ? strum.members[i].x += 100 : strum.members[i].x -= 100;
             FlxTween.cancelTweensOf(strum.members[i]);
             strum.members[i].y += 30;
             strum.members[i].alpha = 0;
+            notepositiony = strum.members[i].y;
         }
     }
 
-    var coords:Array<Array<Int>> = [ [-100, -220], [370, -220], [1550, -130], [-90, -130], [150, 200], [150, -150], [-50, -350], [0, 660]];
+    for (i in 0...player.length) {
+        notepositionplayerx.push(player.members[i].x);
+    }
+
+    for (i in 0...cpu.length) {
+        notepositioncpux.push(cpu.members[i].x);
+    }
+
+    var coords:Array<Array<Int>> = [ [-100, -220], [370, -220], [1550, -130], [-90, -130], [150, 200], [150, -100], [-50, -350], [0, 660]];
 
     for(i in 1...10){
         var sprite = "num" + i;
         if(i <= 7){
             insert(0, sprite = new FunkinSprite(coords[i - 1][0], coords[i - 1][1]).loadGraphic(Paths.image("stages/intruderr/" + i)));
             if(i == 4) sprite.shader = scroll;
-            if(i == 5) sprite.scrollFactor.set(0.5, 0.8);
+            if(i == 5 || i == 6) sprite.scrollFactor.set(0.5, 0.8);
             sprite.scale.set(1.2, 1.2);
         }else{
             insert(0, sprite = new FunkinSprite(0, (i == 8) ? 0 : coords[7][1]).makeGraphic(FlxG.width, 60, 0xFF000000));
@@ -118,13 +151,15 @@ function postCreate(){
 
     for(sprite in [boyfriend, dad]){
         sprite.setPosition(sprite.x + (sprite == boyfriend ? 360 : 340), sprite.y + (sprite == boyfriend ? 265 : 180));
-        sprite.cameraOffset.set((sprite == boyfriend ? -340 : 150), (sprite == boyfriend ? -250 : 250));
+        sprite.cameraOffset.set((sprite == boyfriend ? -340 : 150), (sprite == boyfriend ? -250 : 300));
     }
 
     dad.scale.set(0.75, 0.75);
     dad.alpha = 0;
 
     FlxG.camera.zoom = defaultCamZoom = 1.8;
+
+    for (obj in [scoreTxt, missesTxt, accuracyTxt, iconP1, iconP2, healthBar, healthBarBG]) obj.alpha = 0;
 }
 
 function onStartSong(){
@@ -185,11 +220,121 @@ function stepHit(){
         FlxTween.tween(boyfriend.cameraOffset, {x: 0, y: 300}, 1.5, {ease: FlxEase.smoothStepInOut});
         FlxTween.tween(FlxG.camera, { zoom: 0.6 }, 2, {ease: FlxEase.smoothStepInOut});
     }
+
+    if(curStep >= 384 && phase == 2){
+        phase = 2.5;
+        movecam = true;
+        camGame.alpha = 0;
+    }
+
+    if(curStep >= 416 && phase == 2.5){
+        phase = 3;
+        camGame.alpha = 1;
+    }
+
+    if(curStep >= 878 && phase == 3){
+        phase = 4;
+        movecam = false;
+
+        //defaultCamZoom = 1.2;
+        FlxTween.tween(boyfriend.cameraOffset, {x: 100, y: 350}, 1, {
+            ease: FlxEase.smoothStepInOut
+        });
+
+        //FlxTween.tween(FlxG.camera, { zoom: 1.2 }, 1.5, {ease: FlxEase.smoothStepInOut});
+        FlxTween.num(defaultCamZoom, 1.2, 1.5, { ease: FlxEase.smoothStepInOut }, function(v){ defaultCamZoom = v;});
+
+        FlxTween.num(blangro.grayAmount, 1, 2, { ease: FlxEase.smoothStepInOut }, function(v){ blangro.grayAmount = v;});
+
+        FlxTween.num(blangro.grayAmount, 1, 2, { ease: FlxEase.smoothStepInOut }, function(v){ blangro.grayAmount = v;});
+
+        FlxTween.num(saturation. AAA, 0.50, 2, { ease: FlxEase.smoothStepInOut }, function(v){ saturation. AAA = v;});
+    }
+
+    if(curStep >= 910 && phase == 4){
+        phase = 5;
+        movecam = true;
+
+        FlxTween.tween(boyfriend.cameraOffset, {x: 0, y: 300}, 1, {
+            ease: FlxEase.smoothStepInOut
+        });
+
+        FlxTween.num(blangro.grayAmount, 0, 0.5, { ease: FlxEase.smoothStepInOut }, function(v){ blangro.grayAmount = v;});
+
+        FlxTween.num(saturation. AAA, 0.20, 2, { ease: FlxEase.smoothStepInOut }, function(v){ saturation. AAA = v;});
+    }
+
+    if(curStep >= 944 && phase == 5){
+        phase = 5.1;
+        FlxG.camera.flash(0xFFFFFFFF, 1);
+    }
+
+    if(curStep >= 1200 && phase == 5.1){
+        phase = 5.2;
+        camGame.alpha = 0;
+    }
+
+    if(curStep >= 1218 && phase == 5.2){
+        phase = 6;
+        camGame.alpha = 1;
+    }
 }
 
-function update(elapsed:Float){
+function update(elapsed:Float) {
     totalTime += elapsed;
     scroll.iTime = totalTime;
+
+    if(curStep >= 944 && curStep <= 1203) {
+        reset = false;
+        
+        for (strumLine in [cpu, player]) {
+            for (i in 0...strumLine.length) {
+                var receptor = strumLine.members[i];
+                receptor.alpha = 1;
+                receptor.setPosition(receptor.x + Math.cos(totalTime * 2 + i) * 0.5, 100 + Math.sin(totalTime * 3 + i) * 10);
+                receptor.angle = Math.sin(totalTime * 2 + i) * 10;
+            }
+        }
+        camGame.angle = Math.sin(totalTime * 2) * 5;
+        huddelamierdaaaa.angle = Math.sin(totalTime * 2) * 5;
+
+    } else if (curStep >= 1204 && !reset) {
+        reset = true;
+
+        FlxTween.tween(camGame, {angle: 0}, 1, {ease: FlxEase.smoothStepInOut});
+        FlxTween.tween(huddelamierdaaaa, {angle: 0}, 1, {ease: FlxEase.smoothStepInOut});
+
+        for (i in 0...cpu.length) {
+            FlxTween.tween(cpu.members[i], {x: notepositioncpux[i], y: notepositiony, angle: 0}, 1, {ease: FlxEase.smoothStepInOut});
+        }
+
+        for (i in 0...player.length) {
+            FlxTween.tween(player.members[i], {x: notepositionplayerx[i], y: notepositiony, angle: 0}, 1, {ease: FlxEase.smoothStepInOut});
+        }
+    }
 }
 
-function onCameraMove(e:CamMoveEvent){if(movecam){ FlxTween.num(defaultCamZoom, (e.strumLine == strumLines.members[0]) ? 0.8 : 0.55, 0.15, { ease: FlxEase.quadOut }, function(v){ defaultCamZoom = v;});}}
+function onCameraMove(e:CamMoveEvent){
+    if(movecam){
+        switch (strumLines.members[curCameraTarget].characters[0].getAnimName()) {
+            case "singLEFT", "singLEFT-alt": movement.set(-90, 0);
+                FlxG.camera.angle = lerp(FlxG.camera.angle, -1.5, 0.055);
+            case "singDOWN", "singDOWN-alt": movement.set(0, 90);
+                FlxG.camera.angle = lerp(FlxG.camera.angle, 0, 0.055);
+            case "singUP", "singUP-alt": movement.set(0, -90);
+                FlxG.camera.angle = lerp(FlxG.camera.angle, 0, 0.055);
+            case "singRIGHT", "singRIGHT-alt": movement.set(90, 0);
+                FlxG.camera.angle = lerp(FlxG.camera.angle, 1.5, 0.055);
+            default: movement.set(0, 0);
+                FlxG.camera.angle = lerp(FlxG.camera.angle, 0, 0.01);
+        }
+        e.position.x += movement.x;
+        e.position.y += movement.y;
+        FlxTween.num(defaultCamZoom, (e.strumLine == strumLines.members[0]) ? 0.8 : 0.55, 0.15, { ease: FlxEase.quadOut }, function(v){ defaultCamZoom = v;});
+    }
+}
+
+function onDadHit(){
+    camGame.shake(0.005,0.2, null, true, null);
+    huddelamierdaaaa.shake(0.004,0.2, null, true, null);
+}
