@@ -1,5 +1,7 @@
 import flixel.math.FlxBasePoint;
 
+var gfaysi = new Character(0, 0, 'gfaysi');
+
 var movement = new FlxBasePoint();
 var movecam:Bool = false;
 var totalTime:Float = 0;
@@ -8,6 +10,7 @@ var notepositiony:Float;
 var notepositionplayerx:Array<Float> = [];
 var notepositioncpux:Array<Float> = [];
 var reset:Bool = false;
+var gfanim:Bool = true;
 
 var saturation = new FunkinShader('
     #pragma header
@@ -134,6 +137,21 @@ function postCreate(){
         notepositioncpux.push(cpu.members[i].x);
     }
 
+    for(sprite in [boyfriend, dad]){
+        trace(sprite.x + " " + sprite.y);
+        sprite.setPosition(sprite.x + (sprite == boyfriend ? 360 : 340), sprite.y + (sprite == boyfriend ? 265 : 180));
+        sprite.cameraOffset.set((sprite == boyfriend ? -340 : 150), (sprite == boyfriend ? -250 : 300));
+        if(sprite == boyfriend) sprite.alpha = 0;
+        trace(sprite.x + " " + sprite.y);
+    }
+
+    dad.scale.set(0.75, 0.75);
+    dad.alpha = 0;
+
+    insert(0, gfaysi);
+    gfaysi.setPosition(1130, 365);
+    gfaysi.flipX = boyfriend.flipX;
+
     var coords:Array<Array<Int>> = [ [-100, -220], [370, -220], [1550, -130], [-90, -130], [150, 200], [150, -100], [-50, -350], [0, 660]];
 
     for(i in 1...10){
@@ -148,14 +166,6 @@ function postCreate(){
             sprite.camera = camHUD;
         }
     }
-
-    for(sprite in [boyfriend, dad]){
-        sprite.setPosition(sprite.x + (sprite == boyfriend ? 360 : 340), sprite.y + (sprite == boyfriend ? 265 : 180));
-        sprite.cameraOffset.set((sprite == boyfriend ? -340 : 150), (sprite == boyfriend ? -250 : 300));
-    }
-
-    dad.scale.set(0.75, 0.75);
-    dad.alpha = 0;
 
     FlxG.camera.zoom = defaultCamZoom = 1.8;
 
@@ -201,6 +211,11 @@ function stepHit(){
         phase = 1;
         dad.alpha = 1;
         defaultCamZoom = 1;
+        gfaysi.idleSuffix = "-alt";
+        gfanim = false;
+        gfaysi.playAnim("sustico", false);
+        new FlxTimer().start(0.5, _ -> gfanim = true);
+
         FlxTween.tween(boyfriend.cameraOffset, {x: -200, y: 200}, 1, {
             ease: FlxEase.smoothStepInOut
         });
@@ -280,9 +295,29 @@ function stepHit(){
     }
 }
 
+function onPlayerHit(event) {
+    if(gfanim) {
+        gfaysi.playAnim(boyfriend.getAnimName(), true);
+    }
+}
+
+function onPlayerMiss(event) {
+    if(gfanim) {
+        gfaysi.playAnim(boyfriend.getAnimName(), false);
+    }
+}
+
 function update(elapsed:Float) {
     totalTime += elapsed;
     scroll.iTime = totalTime;
+
+    var currentAnim = boyfriend.getAnimName();
+
+    if(boyfriend.getAnimName() != "idle" && boyfriend.getAnimName() != "idle-alt" && gfanim) {
+        if(gfaysi.getAnimName() != currentAnim) {
+            gfaysi.playAnim(boyfriend.getAnimName(), true);
+        }
+    }
 
     if(curStep >= 944 && curStep <= 1203) {
         reset = false;
