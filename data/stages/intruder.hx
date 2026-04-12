@@ -11,6 +11,7 @@ var notepositionplayerx:Array<Float> = [];
 var notepositioncpux:Array<Float> = [];
 var reset:Bool = false;
 var gfanim:Bool = true;
+var negro:FunkinSprite;
 
 var saturation = new FunkinShader('
     #pragma header
@@ -118,6 +119,9 @@ function postCreate(){
     saturation.brightness = 0;
     saturation.saturation = 0;
 
+    add(negro = new FunkinSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xFF000000));
+    negro.camera = camHUD;
+
     for(strum in [cpu, player]){
         for (i in 0...4) {
             strum.members[i].camera = huddelamierdaaaa;
@@ -138,18 +142,16 @@ function postCreate(){
     }
 
     for(sprite in [boyfriend, dad]){
-        trace(sprite.x + " " + sprite.y);
         sprite.setPosition(sprite.x + (sprite == boyfriend ? 360 : 340), sprite.y + (sprite == boyfriend ? 265 : 180));
         sprite.cameraOffset.set((sprite == boyfriend ? -340 : 150), (sprite == boyfriend ? -250 : 300));
         if(sprite == boyfriend) sprite.alpha = 0;
-        trace(sprite.x + " " + sprite.y);
     }
 
     dad.scale.set(0.75, 0.75);
     dad.alpha = 0;
 
     insert(0, gfaysi);
-    gfaysi.setPosition(1130, 365);
+    gfaysi.setPosition(1050, 365);
     gfaysi.flipX = boyfriend.flipX;
 
     var coords:Array<Array<Int>> = [ [-100, -220], [370, -220], [1550, -130], [-90, -130], [150, 200], [150, -100], [-50, -350], [0, 660]];
@@ -173,6 +175,7 @@ function postCreate(){
 }
 
 function onStartSong(){
+    FlxTween.tween(negro, { alpha: 0 }, 1, {ease: FlxEase.smoothStepInOut});
     FlxTween.tween(FlxG.camera, { zoom: 1.5 }, 11.8, {
         ease: FlxEase.smoothStepInOut,
 
@@ -293,7 +296,60 @@ function stepHit(){
         phase = 6;
         camGame.alpha = 1;
     }
+
+    if(curStep == 2336 || curStep == 2342 || curStep == 2368 || curStep == 2374 || curStep == 2400 || curStep == 2406 || curStep == 2432 || curStep == 2438) FlxTween.num(1.1, 0.9, 0.4, { ease: FlxEase.quadOut }, function(v){ huddelamierdaaaa.zoom = v;});
+    if(curStep == 2950 || curStep == 2954 || curStep == 2958 || curStep == 2966) FlxTween.num(1, 0.9, 0.4, { ease: FlxEase.quadOut }, function(v){ huddelamierdaaaa.zoom = v;});
+    if(curStep == 3662){
+        FlxTween.num(1.1, 0.9, 2, { ease: FlxEase.quadOut }, function(v){ huddelamierdaaaa.zoom = v;});
+        defaultCamZoom = 3;
+        FlxTween.num(FlxG.camera.zoom, 3, 2, { ease: FlxEase.circIn }, function(v){ 
+            FlxG.camera.zoom = v;
+        });
+        FlxTween.tween(dad.cameraOffset, {y: -320}, 2, {ease: FlxEase.circIn});
+
+        FlxTween.tween(negro, { alpha: 1 }, 2, {ease: FlxEase.smoothStepInOut});
+        FlxTween.tween(huddelamierdaaaa, { alpha: 0 }, 2, {ease: FlxEase.smoothStepInOut});
+    }
 }
+
+function beatHit(){
+    if(curBeat % 4 == 0 && (curBeat >= 55 && curBeat < 96)){
+        zooming(1);
+    }else if(curBeat % 4 == 0 && (curBeat >= 104 && curBeat < 168)){
+        zooming(0.95);
+    }else if(curBeat % 2 == 0 && (curBeat >= 172 && curBeat < 219)){
+        zooming(0.95);
+    }else if(curBeat % 2 == 0 && (curBeat >= 228 && curBeat < 235)){
+        zooming(0.95);
+    }else if(curBeat % 4 == 0 && (curBeat >= 236 && curBeat < 300)){
+        zooming(1);
+    }else if(curBeat % 4 == 0 && (curBeat >= 304 && curBeat < 364)){
+        zooming(1);
+    }else if(curBeat % 2 == 0 && (curBeat >= 368 && curBeat < 433)){
+        zooming(1);
+    }else if(curBeat % 8 == 0 && (curBeat >= 436 && curBeat < 581)){
+        zooming(0.95);
+    }else if(curBeat % 1 == 0 && (curBeat >= 616 && curBeat < 647)){
+        zooming(1.05);
+    }else if(curBeat % 2 == 0 && (curBeat >= 648 && curBeat < 711)){
+        zooming(1);
+    }else if(curBeat % 4 == 0 && (curBeat >= 712 && curBeat < 775)){
+        zooming(0.95);
+    }else if(curBeat % 4 == 0 && ((curBeat >= 776 && curBeat < 803) || (curBeat >= 808 && curBeat < 839))){
+        zooming(1);
+    }else if(curBeat % 2 == 0 && (curBeat >= 840 && curBeat < 907)){
+        zooming(1);
+    }
+
+    if(curBeat == 364 || curBeat == 365 || curBeat == 804 || curBeat == 805) FlxTween.num(1.1, 0.9, 0.4, { ease: FlxEase.quadOut }, function(v){ huddelamierdaaaa.zoom = v;});
+}
+
+function zooming(power:Float) {
+    huddelamierdaaaa.zoom = power;
+    FlxTween.tween(huddelamierdaaaa, { zoom: 0.9 }, 0.6, {ease: FlxEase.quadOut});
+    //FlxTween.num(power, 0.9, 0.6, { ease: FlxEase.quadOut }, function(v){ huddelamierdaaaa.zoom = v;});
+}
+
 
 function onPlayerHit(event) {
     if(gfanim) {
@@ -312,6 +368,8 @@ function update(elapsed:Float) {
     scroll.iTime = totalTime;
 
     var currentAnim = boyfriend.getAnimName();
+
+    trace("zoom: " + huddelamierdaaaa.zoom + ", curStep: " + curStep + ", curBeat: " + curBeat);
 
     if(boyfriend.getAnimName() != "idle" && boyfriend.getAnimName() != "idle-alt" && gfanim) {
         if(gfaysi.getAnimName() != currentAnim) {
