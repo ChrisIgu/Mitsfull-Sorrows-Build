@@ -172,6 +172,7 @@ function postCreate(){
     FlxG.camera.zoom = defaultCamZoom = 1.8;
 
     for (obj in [scoreTxt, missesTxt, accuracyTxt, iconP1, iconP2, healthBar, healthBarBG]) obj.alpha = 0;
+    movecam = false;
 }
 
 function onStartSong(){
@@ -310,6 +311,28 @@ function stepHit(){
         FlxTween.tween(negro, { alpha: 1 }, 2, {ease: FlxEase.smoothStepInOut});
         FlxTween.tween(huddelamierdaaaa, { alpha: 0 }, 2, {ease: FlxEase.smoothStepInOut});
     }
+
+    if(curStep == 2336 || curStep == 2400){
+        movecam = false;
+        FlxG.camera.zoom = defaultCamZoom = 0.6;
+    }
+    if(curStep == 2342 || curStep == 2406) {
+        FlxG.camera.zoom = defaultCamZoom = 0.8;
+        FlxTween.num(FlxG.camera.zoom, 0.65, 4, { ease: FlxEase.circIn }, function(v){ 
+            FlxG.camera.zoom = defaultCamZoom = v;
+        });
+    }
+    if(curStep == 2368 || curStep == 2432){
+        FlxG.camera.zoom = defaultCamZoom = 0.8;
+    }
+    if(curStep == 2374 || curStep == 2438) {
+        FlxG.camera.zoom = defaultCamZoom = 1.2;
+        FlxTween.num(FlxG.camera.zoom, 0.65, 2, { ease: FlxEase.circIn }, function(v){ 
+            FlxG.camera.zoom = defaultCamZoom = v;
+        });
+    }
+
+    if(curStep >= 2464 && !movecam) movecam = true;
 }
 
 function beatHit(){
